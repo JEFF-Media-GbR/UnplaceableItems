@@ -1,0 +1,18 @@
+main: ${spigot.main}
+name: ${project.name}
+version: ${project.version}
+prefix: ${spigot.prefix}
+website: "${spigot.website}"
+author: mfnalex
+database: false
+api-version: "1.13"
+load: POSTWORLD
+commands:
+  unplaceableitems:
+    description: Toggles whether the current item can be placed in the world or not
+    usage: /<command>
+    permission: unplaceableitems.use
+permissions:
+  unplaceableitems.use:
+    description: Whether a player can use the /unplaceableitems command
+    default: op
