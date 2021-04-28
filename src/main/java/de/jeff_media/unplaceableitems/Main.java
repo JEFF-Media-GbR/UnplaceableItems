@@ -60,6 +60,7 @@ public class Main extends JavaPlugin implements CommandExecutor, Listener {
         List<String> lore = new ArrayList<>();
         if(meta.hasLore()) lore = meta.getLore();
         lore.add(ChatColor.RED + "Unplaceable");
+        meta.setLore(lore);
         item.setItemMeta(meta);
     }
 
