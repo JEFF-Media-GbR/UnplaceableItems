@@ -3,7 +3,7 @@ package de.jeff_media.nbtviewer.gui.menu;
 import de.jeff_media.nbtviewer.Main;
 import de.jeff_media.nbtviewer.gui.Action;
 import de.jeff_media.nbtviewer.gui.Holder;
-import de.jeff_media.nbtviewer.util.HeadUtils;
+
 import de.jeff_media.nbtviewer.util.Heads;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.jeff_media.nbtviewer.gui.GUIUtils.*;
+import static de.jeff_media.nbtviewer.util.GUIUtils.*;
 import static de.jeff_media.nbtviewer.util.NBTUtils.*;
 
 public class PluginMenu {
@@ -35,7 +35,7 @@ public class PluginMenu {
         Inventory inv = Bukkit.createInventory(new Holder(item,"plugin"),54,"NBT Reloaded: " + getPluginNameFromNamespace(namespace));
         inv.setItem(0,getButton(Material.REDSTONE,"§aBack",null,getHashMap("action", Action.GOTO_MAIN)));
         inv.setItem(4,item);
-        inv.setItem(8,getButton(HeadUtils.getHead(Heads.GREEN_PLUS),"§aAdd",Arrays.asList("Add new NBT data"), getHashMap("action",Action.ADD_KEY,"namespace",namespace)));
+        inv.setItem(8,getButton(getHead(Heads.GREEN_PLUS),"§aAdd NBT Data",null, getHashMap("action",Action.ADD_KEY,"namespace",namespace)));
         fill(inv,0,8);
 
         for(String key : getKeys(item.getItemMeta(),namespace)) {
@@ -44,7 +44,7 @@ public class PluginMenu {
             List<String> lore = Arrays.asList(String.valueOf(value));
             String[] data = {"action",Action.GOTO_KEY,"namespace",namespace,"key",key};
 
-            inv.addItem(getButton(Material.BOOK, name, lore, getHashMap(data)));
+            inv.addItem(getButton(getLetter(key, false), name, lore, getHashMap(data)));
         }
 
         player.openInventory(inv);

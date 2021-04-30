@@ -1,9 +1,12 @@
 package de.jeff_media.nbtviewer.gui.menu;
 
+import de.jeff_media.nbtviewer.conversation.KeyPrompt;
+import de.jeff_media.nbtviewer.conversation.NamespacePrompt;
 import de.jeff_media.nbtviewer.conversation.ValuePrompt;
 import de.jeff_media.nbtviewer.Main;
 import de.jeff_media.nbtviewer.gui.Action;
 import de.jeff_media.nbtviewer.gui.Holder;
+import de.jeff_media.nbtviewer.util.Heads;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
@@ -18,7 +21,10 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-import static de.jeff_media.nbtviewer.gui.GUIUtils.*;
+import java.util.HashMap;
+import java.util.Objects;
+
+import static de.jeff_media.nbtviewer.util.GUIUtils.*;
 import static de.jeff_media.nbtviewer.util.NBTUtils.*;
 
 public class MainMenu implements Listener {
@@ -40,18 +46,19 @@ public class MainMenu implements Listener {
         Inventory inv = Bukkit.createInventory(new Holder(item,"main"),54,"NBT Reloaded");
         inv.setItem(0,getButton(Material.REDSTONE, "§aExit", null, getHashMap("action", Action.EXIT)));
         inv.setItem(4,item);
+        inv.setItem(8,getButton(getHead(Heads.GREEN_PLUS),"§aAdd NBT Data",null, getHashMap("action",Action.ADD_NAMESPACE)));
         fill(inv,0,8);
         //inventory.setItem(2,getButton(Material.NAME_TAG,"§aGeneral Data", Arrays.asList("Edit name, lore, etc."),getHashMap(
         //        "action","plugin",
         //        "plugin","minecraft")));
         for(String namespace : getNamespaces(item.getItemMeta())) {
-            inv.addItem(getButton(Material.BOOKSHELF, getPluginNameFromNamespace(namespace),null,getHashMap("action", Action.GOTO_PLUGIN,"plugin",namespace)));
+            inv.addItem(getButton(getLetter(namespace, true), getPluginNameFromNamespace(namespace),null,getHashMap("action", Action.GOTO_PLUGIN,"plugin",namespace)));
         }
         player.openInventory(inv);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onGeneralClick(InventoryClickEvent event) {
+    public void onClick(InventoryClickEvent event) {
         InventoryView view = event.getView();
         Inventory top = view.getTopInventory();
         if(top == null) {
@@ -100,52 +107,52 @@ public class MainMenu implements Listener {
         switch(action) {
             case Action.EXIT:
                 player.closeInventory();
-                break;
+                return;
             case Action.GOTO_PLUGIN:
                 PluginMenu.show(player, item, (String) getNBT(clickedItem,main,"plugin",STRING));
-                break;
+                return;
             case Action.GOTO_MAIN:
                 MainMenu.show(player,item);
-                break;
+                return;
             case Action.GOTO_KEY:
                 KeyMenu.show(player,item,clickedItem);
-                break;
+                return;
             case Action.REMOVE_KEY:
                 namespace = (String) getNBT(clickedItem,main,"namespace");
                 key = (String) getNBT(clickedItem,main,"key");
                 removeNBT(item,namespace,key);
                 PluginMenu.show(player, item, namespace);
-                break;
+                return;
+        }
+
+        namespace = (String) getNBT(clickedItem,main,"namespace");
+        key = (String) getNBT(clickedItem,main,"key");
+        PersistentDataType type = getCorrectPersistentDataType(item, namespace, key);
+        HashMap<Object,Object> context = new HashMap<>();
+        context.put("item",item);
+        if(key != null) context.put("key",key);
+        if (type != null) context.put("type",type);
+        if(namespace != null) context.put("namespace",namespace);
+        ConversationFactory factory = new ConversationFactory(main);
+        factory.withEscapeSequence("!");
+        factory.withLocalEcho(true);
+        factory.withInitialSessionData(context);
+        //ChatInputListenerOld.schedule(player,item,namespace,key,getCorrectPersistentDataType(item.getItemMeta().getPersistentDataContainer(), new NamespacedKey(namespace,key)));
+
+        switch(action) {
             case Action.EDIT_KEY:
+                factory.withFirstPrompt(new ValuePrompt());
+                break;
             case Action.ADD_KEY:
-                player.closeInventory();
-                namespace = (String) getNBT(clickedItem,main,"namespace");
-                key = (String) getNBT(clickedItem,main,"key");
-                PersistentDataType type = getCorrectPersistentDataType(item, namespace, key);
-                ConversationFactory factory = new ConversationFactory(main);
-                Prompt valuePrompt = new ValuePrompt(item);
-                factory.withFirstPrompt(valuePrompt);
-                factory.withEscapeSequence("!");
-                factory.withLocalEcho(true);
-                Conversation conversation = factory.buildConversation(player);
-                ConversationContext context = conversation.getContext();
-                context.setSessionData("key",key);
-                context.setSessionData("namespace",namespace);
-                conversation.begin();
-                //ChatInputListenerOld.schedule(player,item,namespace,key,getCorrectPersistentDataType(item.getItemMeta().getPersistentDataContainer(), new NamespacedKey(namespace,key)));
+                factory.withFirstPrompt(new KeyPrompt());
+                break;
+            case Action.ADD_NAMESPACE:
+                factory.withFirstPrompt(new NamespacePrompt());
                 break;
         }
+        player.closeInventory();
+        Conversation conversation = factory.buildConversation(player);
+        conversation.begin();
 
     }
-
-    public void onClick(Player player, String action, ItemStack item, ItemStack clickedItem) {
-
-        System.out.println("MainMenu.onClick()");
-
-        switch (action) {
-
-        }
-
-    }
-
 }

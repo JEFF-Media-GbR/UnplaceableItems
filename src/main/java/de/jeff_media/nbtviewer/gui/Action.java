@@ -10,4 +10,5 @@ public class Action {
     public static final String GOTO_KEY = "gotokey";
     public static final String REMOVE_KEY = "removekey";
     public static final String EXIT = "exit";
+    public static final String ADD_NAMESPACE = "addnamespace";
 }

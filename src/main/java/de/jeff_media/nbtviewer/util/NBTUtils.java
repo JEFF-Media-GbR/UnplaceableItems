@@ -103,36 +103,6 @@ public class NBTUtils {
         return getNBT(item.getItemMeta(), plugin.getName().toLowerCase(), key);
     }
 
-    /*public static Object getNBT(PersistentDataHolder holder, String namespace, String key) {
-        //return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(namespace,key),getCorrectPersistentDataType(holder, namespace,key),null);
-        PersistentDataType type = getCorrectPersistentDataType(holder, namespace, key);
-        if(type == null) return null;
-        return getNBT(holder,namespace,key,type);
-    }
-
-    public static Object getNBT(ItemStack item, String namespace, String key) {
-        return getNBT(item.getItemMeta(),namespace,key);
-    }
-
-    public static Object getNBT(PersistentDataHolder holder, Plugin plugin, String key) {
-        //return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin,key),getCorrectPersistentDataType(holder, plugin.getName().toLowerCase(Locale.ROOT), key),null);
-        return getNBT(holder,plugin.getName().toLowerCase(Locale.ROOT),key);
-    }
-
-    public static Object getNBT(ItemStack item, Plugin plugin, String key) {
-        return getNBT(item.getItemMeta(),plugin,key);
-    }
-
-    public static Object getNBT(PersistentDataHolder holder, String namespace, String key, PersistentDataType type) {
-        return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(namespace,key),type,null);
-    }
-
-    public static Object getNBT(ItemStack item, Plugin plugin, String key, PersistentDataType type) {
-        return getNBT(item.getItemMeta(),plugin.getName().toLowerCase(Locale.ROOT),key,type);
-    }*/
-
-
-
     public static List<String> getNamespaces(PersistentDataHolder holder) {
         PersistentDataContainer pdc = holder.getPersistentDataContainer();
         List<String> namespaces = new ArrayList<>();
@@ -152,12 +122,6 @@ public class NBTUtils {
             }
         }
         return keys.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-    }
-
-    public static String getPluginNameFromNamespace(String namespace) {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin(namespace);
-        if(plugin == null) return namespace + ChatColor.GRAY + " (unloaded)";
-        return plugin.getName();
     }
 
     public static String getFormattedKeyName(PersistentDataContainer pdc, NamespacedKey key) {
