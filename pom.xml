@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.jeff_media</groupId>
-    <name>UnplaceableItems</name>
-    <artifactId>UnplaceableItems</artifactId>
+    <name>NBTViewer</name>
+    <artifactId>NBTViewer</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <spigot.website>https://www.spigotmc.org/resources/authors/mfnalex.175238/</spigot.website>
         <spigot.prefix>${project.name}</spigot.prefix>
-        <spigot.main>${project.groupId}.unplaceableitems.Main</spigot.main>
+        <spigot.main>${project.groupId}.nbtviewer.Main</spigot.main>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -98,6 +98,12 @@
             <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
