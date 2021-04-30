@@ -65,8 +65,49 @@ public class NBTUtils {
         item.setItemMeta(meta);
     }
 
+    public static Object getNBT(PersistentDataHolder holder, String namespace, String key, PersistentDataType type) {
+        if(type == null) return null;
+        PersistentDataContainer pdc = holder.getPersistentDataContainer();
+        NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
+        if(!pdc.has(namespacedKey, type)) return null;
+        return pdc.get(namespacedKey, type);
+    }
+
+    public static Object getNBT(ItemStack item, String namespace, String key, PersistentDataType type) {
+        return getNBT(item.getItemMeta(), namespace, key, type);
+    }
+
+    public static Object getNBT(PersistentDataHolder holder, Plugin plugin, String key, PersistentDataType type) {
+        return getNBT(holder, plugin.getName().toLowerCase(), key, type);
+    }
+
+    public static Object getNBT(ItemStack item, Plugin plugin, String key, PersistentDataType type) {
+        return getNBT(item.getItemMeta(), plugin.getName().toLowerCase(), key, type);
+    }
+
     public static Object getNBT(PersistentDataHolder holder, String namespace, String key) {
-        return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(namespace,key),getCorrectPersistentDataType(holder, namespace,key),null);
+        PersistentDataType type = getCorrectPersistentDataType(holder, namespace, key);
+        return getNBT(holder,namespace,key,type);
+    }
+
+    public static Object getNBT(ItemStack item, String namespace, String key) {
+        return getNBT(item.getItemMeta(), namespace, key);
+    }
+
+    public static Object getNBT(PersistentDataHolder holder, Plugin plugin, String key) {
+        PersistentDataType type = getCorrectPersistentDataType(holder, plugin.getName().toLowerCase(), key);
+        return getNBT(holder,plugin,key,type);
+    }
+
+    public static Object getNBT(ItemStack item, Plugin plugin, String key) {
+        return getNBT(item.getItemMeta(), plugin.getName().toLowerCase(), key);
+    }
+
+    /*public static Object getNBT(PersistentDataHolder holder, String namespace, String key) {
+        //return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(namespace,key),getCorrectPersistentDataType(holder, namespace,key),null);
+        PersistentDataType type = getCorrectPersistentDataType(holder, namespace, key);
+        if(type == null) return null;
+        return getNBT(holder,namespace,key,type);
     }
 
     public static Object getNBT(ItemStack item, String namespace, String key) {
@@ -74,20 +115,21 @@ public class NBTUtils {
     }
 
     public static Object getNBT(PersistentDataHolder holder, Plugin plugin, String key) {
-        return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin,key),getCorrectPersistentDataType(holder, plugin.getName().toLowerCase(Locale.ROOT), key),null);
+        //return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin,key),getCorrectPersistentDataType(holder, plugin.getName().toLowerCase(Locale.ROOT), key),null);
+        return getNBT(holder,plugin.getName().toLowerCase(Locale.ROOT),key);
     }
 
     public static Object getNBT(ItemStack item, Plugin plugin, String key) {
         return getNBT(item.getItemMeta(),plugin,key);
     }
 
-    public static Object getNBT(PersistentDataHolder holder, Plugin plugin, String key, PersistentDataType type) {
-        return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin,key),type,null);
+    public static Object getNBT(PersistentDataHolder holder, String namespace, String key, PersistentDataType type) {
+        return holder.getPersistentDataContainer().getOrDefault(new NamespacedKey(namespace,key),type,null);
     }
 
     public static Object getNBT(ItemStack item, Plugin plugin, String key, PersistentDataType type) {
-        return getNBT(item.getItemMeta(),plugin,key,type);
-    }
+        return getNBT(item.getItemMeta(),plugin.getName().toLowerCase(Locale.ROOT),key,type);
+    }*/
 
 
 
@@ -133,6 +175,7 @@ public class NBTUtils {
     }
 
     public static PersistentDataType getCorrectPersistentDataType(PersistentDataContainer pdc, String namespace, String key) {
+        if(namespace == null || key == null) return null;
         NamespacedKey namespacedKey = new NamespacedKey(namespace,key);
         for(PersistentDataType type : PERSISTENT_DATA_TYPES) {
             if(pdc.has(namespacedKey,type)) {

@@ -3,6 +3,8 @@ package de.jeff_media.nbtviewer.gui.menu;
 import de.jeff_media.nbtviewer.Main;
 import de.jeff_media.nbtviewer.gui.Action;
 import de.jeff_media.nbtviewer.gui.Holder;
+import de.jeff_media.nbtviewer.util.HeadUtils;
+import de.jeff_media.nbtviewer.util.Heads;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,7 +33,7 @@ public class KeyMenu {
         Inventory inv = Bukkit.createInventory(new Holder(item,"plugin"),9,"NBT Reloaded: " + namespace+":"+key);
         inv.setItem(0,getButton(Material.REDSTONE,"§aBack",null,getHashMap("action", Action.GOTO_PLUGIN)));
         inv.setItem(4,item);
-        inv.setItem(7,getButton(Material.FEATHER,"&aEdit",null,getHashMap("action",Action.EDIT_KEY,"namespace",namespace,"key",key)));
+        inv.setItem(7,getButton(Material.FEATHER,"§eEdit",null,getHashMap("action",Action.EDIT_KEY,"namespace",namespace,"key",key)));
         inv.setItem(8,getButton(Material.BARRIER,"§cRemove",null,getHashMap("action",Action.REMOVE_KEY,"namespace",namespace,"key",key)));
         fill(inv,0,8);
 

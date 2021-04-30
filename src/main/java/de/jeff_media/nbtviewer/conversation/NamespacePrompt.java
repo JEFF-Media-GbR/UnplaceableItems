@@ -1,8 +1,8 @@
 package de.jeff_media.nbtviewer.conversation;
 
+import de.jeff_media.nbtviewer.gui.menu.PluginMenu;
 import de.jeff_media.nbtviewer.util.ChatUtils;
 import de.jeff_media.nbtviewer.util.NBTUtils;
-import de.jeff_media.nbtviewer.gui.menu.PluginMenu;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -19,14 +19,11 @@ import java.util.Map;
 
 import static de.jeff_media.nbtviewer.util.NBTUtils.*;
 
-public class ValuePrompt extends ValidatingPrompt {
+public class NamespacePrompt extends ValidatingPrompt {
 
-    private static final String GB = ChatColor.RESET + "" + ChatColor.YELLOW + "" + ChatColor.BOLD;
-    private static final String G = ChatColor.RESET + "" + ChatColor.GOLD;
-    private static final String PREFIX = GB+"[" + G + "VisualNBT" + GB + "]" + ChatColor.RESET+" ";
     private final ItemStack item;
 
-    public ValuePrompt(ItemStack item) {
+    public NamespacePrompt(ItemStack item) {
         this.item = item;
     }
 
@@ -172,7 +169,7 @@ public class ValuePrompt extends ValidatingPrompt {
         if(namespace == null) {
             //System.out.println("setting namespace");
             context.setSessionData("namespace",input);
-            return new ValuePrompt(item);
+            return new NamespacePrompt(item);
         }
 
         //System.out.println(2);
@@ -180,7 +177,7 @@ public class ValuePrompt extends ValidatingPrompt {
         if(key == null) {
             //System.out.println("setting key");
             context.setSessionData("key",input);
-            return new ValuePrompt(item);
+            return new NamespacePrompt(item);
         }
 
         //System.out.println(3);
@@ -193,7 +190,7 @@ public class ValuePrompt extends ValidatingPrompt {
                 System.out.println("setting type");
                 context.setSessionData("type", enteredType);
             }
-            return new ValuePrompt(item);
+            return new NamespacePrompt(item);
         }
 
         if(value == null) {

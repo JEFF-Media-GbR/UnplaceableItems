@@ -3,6 +3,8 @@ package de.jeff_media.nbtviewer.gui.menu;
 import de.jeff_media.nbtviewer.Main;
 import de.jeff_media.nbtviewer.gui.Action;
 import de.jeff_media.nbtviewer.gui.Holder;
+import de.jeff_media.nbtviewer.util.HeadUtils;
+import de.jeff_media.nbtviewer.util.Heads;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -33,6 +35,7 @@ public class PluginMenu {
         Inventory inv = Bukkit.createInventory(new Holder(item,"plugin"),54,"NBT Reloaded: " + getPluginNameFromNamespace(namespace));
         inv.setItem(0,getButton(Material.REDSTONE,"§aBack",null,getHashMap("action", Action.GOTO_MAIN)));
         inv.setItem(4,item);
+        inv.setItem(8,getButton(HeadUtils.getHead(Heads.GREEN_PLUS),"§aAdd",Arrays.asList("Add new NBT data"), getHashMap("action",Action.ADD_KEY,"namespace",namespace)));
         fill(inv,0,8);
 
         for(String key : getKeys(item.getItemMeta(),namespace)) {

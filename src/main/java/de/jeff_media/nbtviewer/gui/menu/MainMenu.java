@@ -117,6 +117,7 @@ public class MainMenu implements Listener {
                 PluginMenu.show(player, item, namespace);
                 break;
             case Action.EDIT_KEY:
+            case Action.ADD_KEY:
                 player.closeInventory();
                 namespace = (String) getNBT(clickedItem,main,"namespace");
                 key = (String) getNBT(clickedItem,main,"key");

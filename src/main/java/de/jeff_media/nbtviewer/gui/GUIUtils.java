@@ -18,7 +18,10 @@ public class GUIUtils {
     private static final Main main = Main.getInstance();
 
     public static ItemStack getButton(Material type, @Nullable String title, @Nullable List<String> lore, @Nullable HashMap<String,String> nbt) {
-        ItemStack item = new ItemStack(type);
+        return getButton(new ItemStack(type), title, lore, nbt);
+    }
+
+    public static ItemStack getButton(ItemStack item, @Nullable String title, @Nullable List<String> lore, @Nullable HashMap<String,String> nbt) {
         ItemMeta meta = item.getItemMeta();
         if(title != null) meta.setDisplayName(title);
         if(lore != null) meta.setLore(lore);
